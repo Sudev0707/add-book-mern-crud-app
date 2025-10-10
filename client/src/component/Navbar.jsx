@@ -9,15 +9,15 @@ const Navbar = () => {
       {/* Logo */}
       <div className="flex items-center">
         <h1 className="font-extrabold text-3xl text-blue-700 tracking-wide cursor-pointer">
-          LOGO
+          CRUD
         </h1>
       </div>
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex gap-8 text-lg font-medium text-gray-800">
-        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200">Home</li>
-        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200">About</li>
-        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200">Contact</li>
+        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200"></li>
+        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200"></li>
+        <li className="cursor-pointer hover:text-blue-600 transition-colors duration-200"></li>
       </ul>
 
       {/* Optional CTA Button */}
@@ -45,19 +45,19 @@ const Navbar = () => {
               className="cursor-pointer hover:text-blue-600 transition-colors duration-200"
               onClick={() => setMenuOpen(false)}
             >
-              Home
+              {/* Home */}
             </li>
             <li
               className="cursor-pointer hover:text-blue-600 transition-colors duration-200"
               onClick={() => setMenuOpen(false)}
             >
-              About
+              {/* About */}
             </li>
             <li
               className="cursor-pointer hover:text-blue-600 transition-colors duration-200"
               onClick={() => setMenuOpen(false)}
             >
-              Contact
+              {/* Contact */}
             </li>
             <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 shadow transition-all duration-200">
               Sign In

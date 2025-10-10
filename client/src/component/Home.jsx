@@ -13,6 +13,7 @@ const Home = () => {
   const [errorMsg, setErrorMsg] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(5);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   //calculate
   const indexOfLastBook = currentPage * booksPerPage;
@@ -32,6 +33,7 @@ const Home = () => {
     Author: "",
     SellingPrice: "",
     PublishedDate: "",
+    Id: "",
   });
 
   const handleFormChange = (e) => {
@@ -63,40 +65,47 @@ const Home = () => {
   const handleSubmitForm = async () => {
     if (!validateForm()) return;
 
+    setLoading(true);
+
     try {
       if (
         !bookFormData?.BookName ||
         !bookFormData?.BookTitle ||
         !bookFormData?.Author ||
-        !bookFormData?.SellingPrice
-        // !bookFormData?.PublishedDate
+        !bookFormData?.SellingPrice ||
+        !bookFormData?.PublishedDate
       ) {
         showToast("All fields are required", "error");
         return;
       }
 
-      setLoading(true);
-      const res = await bookBaseaseUrl.post("/addbook", bookFormData);
+      let res;
+
+      if (!isUpdating) {
+        res = await bookBaseaseUrl.post("/addbook", bookFormData);
+      } else {
+        res = await bookBaseaseUrl.put("/updateBook", bookFormData);
+      }
+
       if (res?.data?.Success) {
         showToast(res.data.Message, "success");
 
-        // ✅ Reset form instantly
         setBookFormData({
           BookName: "",
           BookTitle: "",
           Author: "",
           SellingPrice: "",
           PublishedDate: "",
+          Id: "",
         });
 
+        if (isUpdating) setIsUpdating(false);
+
         await getBookList();
-      } else {
-        showToast(res?.data?.Message || "Something went wrong", "error");
       }
     } catch (error) {
       showToast(error.message || "Internal Server Error", "error");
-
-      console.log(error.message);
+      console.error("❌ handleSubmitForm error:", error.message);
     } finally {
       setLoading(false);
     }
@@ -138,9 +147,23 @@ const Home = () => {
     }
   };
 
+  // update
+  const handleUpdate = (data) => {
+    setBookFormData({
+      BookName: data?.BookName,
+      BookTitle: data?.BookTitle,
+      Author: data?.Author,
+      SellingPrice: data?.SellingPrice,
+      PublishedDate: data?.PublishedDate,
+      Id: data?._id,
+    });
+
+    setIsUpdating(true);
+  };
+
   return (
-    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center px-5 pt-10">
-      <div className="w-full max-w-8xl bg-white shadow-lg rounded-xl p-8 border border-gray-200">
+    <div className="w-full min-h-screen  flex flex-col items-center px-5 pt-8 pb-32">
+      <div className="w-full max-w-8xl bg-white shadow-mdrounded-xl p-8 border border-gray-200">
         <h2 className="text-3xl font-semibold text-gray-800 mb-6 border-b pb-3">
           Add New Book
         </h2>
@@ -254,8 +277,15 @@ const Home = () => {
               onChange={handleFormChange}
               id="publishedDate"
               type="date"
-              className="w-full border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100 rounded-md px-3 py-2 text-gray-700 outline-none transition"
+              className={`w-full border px-3 py-2 rounded-md outline-none transition ${
+                errorMsg.PublishedDate
+                  ? "border-red-500 focus:border-red-500 focus:ring-red-100"
+                  : "border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-100"
+              }`}
             />
+             {errorMsg.PublishedDate && (
+              <span className="text-red-500 text-sm">{errorMsg.PublishedDate}</span>
+            )}
           </div>
 
           {/* Genre */}
@@ -327,7 +357,7 @@ const Home = () => {
                       <button
                         className="text-blue-500 hover:text-blue-700 transition cursor-pointer"
                         title="Edit Book"
-                        // onClick={handleEditBook}
+                        onClick={() => handleUpdate(book)}
                       >
                         <FaEdit className="text-xl" />
                       </button>
