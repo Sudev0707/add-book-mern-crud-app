@@ -76,11 +76,38 @@ const handleDeleteBookComntroller = async (req, res) => {
       });
     }
   } catch (error) {
-     return res.status(500).json({
+    return res.status(500).json({
       message: error.message,
       success: false,
     });
   }
 };
 
-module.exports = { handleBookStoreController, handleBookListController, handleDeleteBookComntroller };
+// update data -----------------------------------------------------
+const handleUpdatBookController = async (req, res) => {
+  
+  try {
+    const body = req.body;
+    const update = await Book.updateOne({ _id: body?.Id }, { $set: body });
+    // console.log(update, "updateinggg");
+
+    if (update?.acknowledged) {
+      return res.json({
+        message: "Book updated successfully",
+        success: true,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
+module.exports = {
+  handleBookStoreController,
+  handleBookListController,
+  handleDeleteBookComntroller,
+  handleUpdatBookController
+};

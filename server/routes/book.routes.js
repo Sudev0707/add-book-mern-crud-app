@@ -2,7 +2,7 @@ const express = require("express");
 const {
   handleBookStoreController,
   handleBookListController,
-  handleDeleteBookComntroller
+  handleDeleteBookComntroller, handleUpdatBookController
 } = require("../controller/book.controller");
 
 const router = express.Router();
@@ -12,5 +12,6 @@ const router = express.Router();
 router.post("/addbook", handleBookStoreController); // http://localhost:8000/book/addbook
 router.get("/getBookList", handleBookListController);
 router.post("/deleteBook", handleDeleteBookComntroller);
+router.put("/updateBook", handleUpdatBookController);
 
 module.exports = router;
