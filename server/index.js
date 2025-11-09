@@ -4,6 +4,7 @@ const express = require("express");
 const databaseConnection = require("./database");
 const bookRouter = require("./routes/book.routes");
 const userRouter = require("./routes/user.route")
+const authMidleware = require("./middleware/auth.middleware")
 const cors = require("cors");
 
 // database connection
@@ -19,7 +20,7 @@ app.get("/", (req, res) => {
 });
 
 // Route to insert a book
-app.use("/book", bookRouter);
+app.use("/book", authMidleware, bookRouter);
 app.use("/user", userRouter)
 
 app.listen(8000, () => {
