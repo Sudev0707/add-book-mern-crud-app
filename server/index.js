@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const databaseConnection = require("./database");
 const bookRouter = require("./routes/book.routes");
+const userRouter = require("./routes/user.route")
 const cors = require("cors");
 
 // database connection
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 // Route to insert a book
 app.use("/book", bookRouter);
+app.use("/user", userRouter)
 
 app.listen(8000, () => {
   console.log("PORT listening on 8000");
