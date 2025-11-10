@@ -23,7 +23,7 @@ const Navbar = () => {
       {/* Optional CTA Button */}
       <div className="hidden md:flex">
         <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 shadow transition-all duration-200">
-          Sign In
+         Hey 
         </button>
       </div>
 
