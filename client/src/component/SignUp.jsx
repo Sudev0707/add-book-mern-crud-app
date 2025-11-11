@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { userBaseURL } from "../utilities/axiosInstance";
 import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 const SignUp = () => {
   const [signUpForm, setSignUpForm] = useState({
@@ -13,6 +14,15 @@ const SignUp = () => {
   const [sucessMsg, setSuccessMsg] = useState("");
   const [emailError, setEmailError] = useState("");
   const navigate = useNavigate();
+
+  //
+  const userAuth = localStorage.getItem("userAuth");
+  const authUser = JSON.parse(userAuth);
+  useEffect(() => {
+    if (authUser?.isLogin) {
+      navigate("/");
+    }
+  }, []);
 
   //   const handleChange = (e) => {
   //     const { name, value } = e.target;
@@ -27,26 +37,22 @@ const SignUp = () => {
 
     // Email validation function
     const validateEmail = (email) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const hasAt = email.includes("@");
-      const hasDotCom = /\.(com|in|org|net|co)$/i.test(email);
-      if (!hasAt) return "Email must include '@'";
-      if (!hasDotCom) return "Email must end with .com, .in, .org, etc.";
-      if (!emailRegex.test(email)) return "Please enter a valid email address";
+      const emailRegex =
+        /^[^\s@]+@[^\s@]+\.(com|in|org|net|co|io|ai|edu|gov)(\.[a-z]{2})?$/i;
+
+      if (!email) return "Email is required";
+      if (!email.includes("@")) return "Email must include '@'";
+      if (!emailRegex.test(email))
+        return "Enter a valid email address (e.g., name@gmail.com)";
       return "";
     };
 
     setSignUpForm((prev) => {
       const updated = { ...prev, [name]: value };
 
-      // Only validate when typing email
-      if (name === "email") {
+      if (name === "Email") {
         const errorMsg = validateEmail(value);
-        if (errorMsg) {
-          setEmailError(errorMsg);
-        } else {
-          setEmailError("");
-        }
+        setEmailError(errorMsg);
       }
 
       return updated;
@@ -60,6 +66,10 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (emailError) {
+      toast.error("please enter valid email");
+      return;
+    }
     // create
     try {
       const data = await userBaseURL.post(`/create`, signUpForm);

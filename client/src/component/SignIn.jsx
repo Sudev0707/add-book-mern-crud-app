@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import { userBaseURL } from "../utilities/axiosInstance";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 const SignIn = () => {
   const [loginForm, setLoginForm] = useState({ Email: "", Password: "" });
   const [emailError, setEmailError] = useState("");
-  const navigate= useNavigate();
+  const navigate = useNavigate();
+
+  //
+  const userAuth = localStorage.getItem("userAuth");
+  const authUser = JSON.parse(userAuth);
+  useEffect(() => {
+    if (authUser?.isLogin) {
+      navigate("/");
+    }
+  }, []);
 
   //  email validation
   const validateEmail = (email) => {
@@ -64,16 +74,15 @@ const SignIn = () => {
       };
 
       // You can store token if needed
-      localStorage.setItem("auth", JSON.stringify(authData));
+      localStorage.setItem("userAuth", JSON.stringify(authData));
       toast.success(res.data.message);
 
       setTimeout(() => {
-        navigate("/")
+        navigate("/");
       }, 1000);
-
     } catch (error) {
       if (error.response) {
-           toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
         alert("Something went wrong. Please try again later.");
       }
@@ -83,7 +92,7 @@ const SignIn = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
-          <Toaster />
+      <Toaster />
       <div className="w-full max-w-md bg-white shadow-md rounded-2xl p-8">
         <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
           Sign In to CRUD

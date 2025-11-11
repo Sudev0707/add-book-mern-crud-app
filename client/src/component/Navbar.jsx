@@ -1,8 +1,15 @@
-import React from 'react'
-import { useState } from 'react';
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userAuth");
+    navigate("/login");
+  };
 
   return (
     <nav className="w-full flex justify-between items-center bg-gray-100 shadow-md px-6 py-4 fixed top-0 left-0 z-50">
@@ -22,8 +29,11 @@ const Navbar = () => {
 
       {/* Optional CTA Button */}
       <div className="hidden md:flex">
-        <button className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 shadow transition-all duration-200">
-         Hey 
+        <button
+          onClick={handleLogout}
+          className="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 shadow transition-all duration-200 cursor-pointer"
+        >
+          Logout
         </button>
       </div>
 
@@ -67,6 +77,6 @@ const Navbar = () => {
       )}
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
