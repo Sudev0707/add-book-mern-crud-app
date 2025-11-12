@@ -1,22 +1,28 @@
-📚 Add Book MERN CRUD App
+### 📚 Add Book MERN CRUD App
 
-A MERN stack (MongoDB, Express.js, React.js, Node.js) CRUD application that allows users to manage a collection of books.
-Users can add, view, edit, and delete books from the database with a clean, responsive UI.
+### 🔗 View  
+here → [https://add-book-mern-crud-app.vercel.app](https://sudev0707.github.io/add-book-mern-crud-app/)
 
-🚀 Features
+A full-stack MERN (MongoDB, Express.js, React.js, Node.js) application that allows users to manage a collection of books with secure JWT-based authentication.
+Users can register, log in, and perform CRUD operations (Create, Read, Update, Delete) on their personal book list through a clean and responsive interface.
 
-✅ Create new book entries (title, author, price, and description)
+### 🚀 Features
 
-📖 View a list of all books
+✅ User Authentication — Secure login and signup using JWT and bcrypt
+✅ Create Books — Add new books with title, author, price, and description
+✏️ Edit Books — Update book details in real-time
+❌ Delete Books — Remove books from your collection
+🌐 RESTful API — Built with Express.js and MongoDB
+⚛️ Frontend — Built using React.js and Axios
+🧱 Modular Architecture — Client and server separated for scalability
 
-✏️ Edit book details
+### 🔐 Authentication Flow
+Users sign up and receive a JWT token upon successful registration or login.
+Protected routes ensure that only authenticated users can manage their books.
+Tokens are securely stored and verified for every API request.
 
-❌ Delete books
+### 🧰 Tech Stack
+Frontend: React.js, Axios, React Router
+Backend: Node.js, Express.js, MongoDB, Mongoose
+Authentication: JWT, bcrypt.js
 
-🌐 RESTful API built with Express.js and MongoDB
-
-⚛️ Frontend built with React.js
-
-🔁 Real-time updates with Axios and React state management
-
-🧱 Modular folder structure (client/server separation)
